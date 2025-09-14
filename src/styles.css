@@ -1,0 +1,387 @@
+/* styles.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+ 
+  .custom-header {
+    display: flex !important;      
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    background-color: #f4f4f4;
+  }
+  
+  .header-title {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 24px;
+    flex-shrink: 0;            
+  }
+  
+  .header-buttons {
+    display: flex !important;      
+    gap: 10px;
+    flex-grow: 1;                 
+    align-items: center;
+  }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+
+.main-content {
+  flex: 1;
+}
+
+  .header-search {
+    flex-grow: 1;
+    padding: 8px;
+    min-width: 150px;
+  }
+  
+  .header-btn {
+    padding: 8px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+
+  .hero {
+    height: 250px;
+    background-color: #ccc; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  
+  section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+ 
+  .card-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 220px;
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+
+  section button {
+    display: block;
+    margin: 0 auto 40px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  section button:hover {
+    background-color: #aaa;
+  }
+  
+ 
+  .newsletter {
+    background-color: #eee;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .newsletter input {
+    padding: 8px;
+    width: 250px;
+    margin-right: 10px;
+  }
+  
+  .newsletter button {
+    padding: 8px 15px;
+  }
+  
+  
+  footer {
+    background-color: lightgreen;
+    padding: 20px;
+  }
+  
+  footer > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  footer h4 {
+    margin-bottom: 5px;
+  }
+  
+  footer p {
+    margin: 0;
+  }
+  
+  footer small {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  #myp{
+    text-align: center;
+  }
+
+
+
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.auth-container input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 0px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.auth-container button {
+    width: 85%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 0px;
+    background-color: #44c880;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.auth-container button:hover {
+    background-color: #45a049;
+}
+
+.auth-container p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.auth-container a {
+    color: #4c5baf;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+
+.plans-page {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.plans-page h1 {
+  margin-bottom: 50px;
+  font-size: 2.2rem;
+  color: #333;
+}
+
+
+.plans-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+
+.plan-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  width: 260px;
+  min-height: 360px;
+  padding: 30px 20px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.plan-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+  color: #444;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.plan-card li {
+  margin: 12px 0;
+}
+
+
+.plan-card button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  color: white;
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+.btn-free {
+  background-color: #2185d0;
+}
+
+.btn-free:hover {
+  background-color: #1664a2;
+}
+
+.btn-premium {
+  background-color: #44c880;
+}
+
+.btn-premium:hover {
+  background-color: #389f6d;
+}
+
+
+.plan-card.premium {
+  background: linear-gradient(145deg, #e0f7ea, #d1f2de);
+}
+
+
+.payment-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f0f9f5, #e0f7ea);
+}
+
+.payment-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.payment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.2);
+}
+
+.payment-card h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.payment-description {
+  margin-bottom: 25px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.StripeElement {
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  margin-bottom: 30px;
+}
+
+.btn-premium-pay {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: #44c880;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-premium-pay:hover {
+  background: #389f6d;
+}
