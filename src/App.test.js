@@ -7,7 +7,7 @@ import Login from './components/Login';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
 
-// Mock Firebase auth functions
+// Mock Firebase auth
 jest.mock('./firebase', () => ({
   auth: {
     signInWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: { email: 'test@example.com' } })),
@@ -21,18 +21,18 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
-// --- App component test ---
-test('renders learn react link', () => {
+// --- App Component ---
+test('renders App without crashing', () => {
   render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
   );
-  const linkElement = screen.queryByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  // Check for an element that exists in your App
+  expect(screen.getByText(/Login/i)).toBeInTheDocument();
 });
 
-// --- Login component tests ---
+// --- Login Component ---
 describe('Login Component', () => {
   const navigate = jest.fn();
 
@@ -46,8 +46,7 @@ describe('Login Component', () => {
         <Login />
       </BrowserRouter>
     );
-    const heading = screen.getByText(/Login/i);
-    expect(heading).toBeInTheDocument();
+    expect(screen.getByText(/Login/i)).toBeInTheDocument();
   });
 
   test('renders email and password inputs', () => {
@@ -62,7 +61,6 @@ describe('Login Component', () => {
 
   test('shows error on invalid login', async () => {
     auth.signInWithEmailAndPassword.mockRejectedValueOnce(new Error('Invalid credentials'));
-
     render(
       <BrowserRouter>
         <Login />
@@ -71,7 +69,6 @@ describe('Login Component', () => {
 
     fireEvent.change(screen.getByPlaceholderText(/Your email/i), { target: { value: 'wrong@test.com' } });
     fireEvent.change(screen.getByPlaceholderText(/Your password/i), { target: { value: 'wrongpass' } });
-
     fireEvent.click(screen.getByText(/Login/i));
 
     const errorMessage = await screen.findByText(/Invalid email or password!/i);
@@ -87,10 +84,8 @@ describe('Login Component', () => {
 
     fireEvent.change(screen.getByPlaceholderText(/Your email/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/Your password/i), { target: { value: 'password' } });
-
     fireEvent.click(screen.getByText(/Login/i));
 
-    // Wait for promise to resolve
     await new Promise(process.nextTick);
 
     expect(navigate).toHaveBeenCalledWith('/');

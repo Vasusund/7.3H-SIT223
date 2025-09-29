@@ -1,48 +1,39 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS 18'   // Make sure NodeJS 18 is installed in Jenkins
-    }
-
     environment {
-        PATH = "${tool('NodeJS 18')}/bin:${env.PATH}"
+        NODEJS_HOME = tool name: 'NodeJS 18', type: 'NodeJSInstallation'
+        PATH = "${NODEJS_HOME}/bin:${env.PATH}"
     }
 
     stages {
-        stage('Checkout') {
+
+        stage('Checkout SCM') {
             steps {
                 echo 'Checking out code from GitHub...'
-                git branch: 'main', url: 'https://github.com/Vasusund/7.3HD-DEV-deakin.git'
+                git url: 'https://github.com/Vasusund/7.3H-SIT223.git', branch: 'main'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing npm dependencies...'
+                sh 'npm ci'
             }
         }
 
         stage('Build') {
-    steps {
-        echo 'Cleaning up old references...'
-        // Remove any import lines that mention TalkAIChat
-        sh "grep -rl 'TalkAIChat' src/ | xargs sed -i '' '/TalkAIChat/d' || true"
-        
-        echo 'Installing dependencies and building app...'
-        sh 'rm -rf node_modules'
-        sh 'npm install'
-        sh 'npm run build'
-    }
-}
-
-
-        stage('Test') {
             steps {
-                echo 'Running tests with Jest...'
-                sh 'npm test -- --watchAll=false'
+                echo 'Building React app...'
+                sh 'npm run build'
+                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
             }
         }
 
-        stage('Code Quality') {
+        stage('Test') {
             steps {
-                echo 'Running ESLint for code quality...'
-                sh 'npm install -g eslint@8.0.0'
-                sh 'eslint src/**/*.js || true'
+                echo 'Running Jest tests...'
+                sh 'npm test -- --watchAll=false'
             }
         }
 
@@ -55,19 +46,23 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying to GitHub Pages...'
-                sh 'npm install -g gh-pages'
-                sh 'npm run deploy'   // Make sure package.json has a deploy script
+                echo 'Deploying application to test environment...'
+                sh 'npm install -g serve'
+                sh 'serve -s build -l 5000 &'
             }
         }
     }
 
     post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
         success {
-            echo 'Pipeline completed successfully! App built and deployed.'
+            echo 'Pipeline succeeded!'
         }
         failure {
-            echo 'Pipeline failed. Check the logs!'
+            echo 'Pipeline failed. Check logs for details.'
         }
     }
 }
