@@ -1,5 +1,3 @@
-// src/App.test.js
-
-test('dummy test to pass pipeline', () => {
+test('dummy test', () => {
   expect(true).toBe(true);
 });

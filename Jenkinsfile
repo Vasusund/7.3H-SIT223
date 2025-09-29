@@ -2,18 +2,13 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS 18' // must match the name in Jenkins Global Tool Configuration
-    }
-
-    environment {
-        PATH = "${tool 'NodeJS 18'}/bin:${env.PATH}"
+        nodejs "NodeJS 18"   // Use the NodeJS version you already configured in Jenkins
     }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Installing dependencies and building app...'
-                sh 'rm -rf node_modules'
+                echo 'Installing dependencies and building project...'
                 sh 'npm install'
                 sh 'npm run build'
             }
@@ -29,7 +24,8 @@ pipeline {
         stage('Code Quality') {
             steps {
                 echo 'Running ESLint for code quality...'
-                sh 'npx eslint src/** || true'
+                // Only check JS/JSX files, not CSS or images
+                sh 'npx eslint "src/**/*.js" "src/**/*.jsx" || true'
             }
         }
 
@@ -43,7 +39,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying to GitHub Pages...'
-                // Make sure GITHUB_TOKEN or personal access token is set in Jenkins credentials
                 withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
                     sh 'npm run deploy'
                 }
@@ -55,12 +50,6 @@ pipeline {
         always {
             echo 'Cleaning up workspace...'
             cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Check logs for details.'
         }
     }
 }
