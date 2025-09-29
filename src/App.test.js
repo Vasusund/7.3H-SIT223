@@ -1,5 +1,7 @@
 // src/App.test.js
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import Login from './components/Login';
 import { auth } from './firebase';
@@ -19,14 +21,18 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
-// --- Existing test for App component ---
+// --- App component test ---
 test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+  const linkElement = screen.queryByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });
 
-// --- New Login component tests ---
+// --- Login component tests ---
 describe('Login Component', () => {
   const navigate = jest.fn();
 
@@ -35,24 +41,37 @@ describe('Login Component', () => {
   });
 
   test('renders Login heading', () => {
-    render(<Login />);
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
     const heading = screen.getByText(/Login/i);
     expect(heading).toBeInTheDocument();
   });
 
   test('renders email and password inputs', () => {
-    render(<Login />);
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
     expect(screen.getByPlaceholderText(/Your email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Your password/i)).toBeInTheDocument();
   });
 
   test('shows error on invalid login', async () => {
     auth.signInWithEmailAndPassword.mockRejectedValueOnce(new Error('Invalid credentials'));
-    render(<Login />);
-    
+
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
+
     fireEvent.change(screen.getByPlaceholderText(/Your email/i), { target: { value: 'wrong@test.com' } });
     fireEvent.change(screen.getByPlaceholderText(/Your password/i), { target: { value: 'wrongpass' } });
-    
+
     fireEvent.click(screen.getByText(/Login/i));
 
     const errorMessage = await screen.findByText(/Invalid email or password!/i);
@@ -60,11 +79,15 @@ describe('Login Component', () => {
   });
 
   test('calls navigate on successful login', async () => {
-    render(<Login />);
-    
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
+
     fireEvent.change(screen.getByPlaceholderText(/Your email/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/Your password/i), { target: { value: 'password' } });
-    
+
     fireEvent.click(screen.getByText(/Login/i));
 
     // Wait for promise to resolve
