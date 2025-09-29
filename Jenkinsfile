@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS 18'   // Make sure NodeJS 18 is installed in Jenkins tools
+        nodejs 'NodeJS 18'   // Make sure NodeJS 18 is installed in Jenkins
     }
 
     environment {
@@ -10,7 +10,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 echo 'Checking out code from GitHub...'
@@ -20,10 +19,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Installing dependencies and building the app...'
+                echo 'Installing dependencies and building app...'
                 sh 'rm -rf node_modules'
-                sh 'npm ci'
-                sh 'npm run build'           // Build artifact created in /build
+                sh 'npm install'
+                sh 'npm run build'
                 archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
@@ -39,7 +38,7 @@ pipeline {
             steps {
                 echo 'Running ESLint for code quality...'
                 sh 'npm install -g eslint@8.0.0'
-                sh 'eslint src/**/*.js || true'     // Run ESLint, continue even if there are warnings
+                sh 'eslint src/**/*.js || true'
             }
         }
 
@@ -52,19 +51,19 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying React app to GitHub Pages...'
+                echo 'Deploying to GitHub Pages...'
                 sh 'npm install -g gh-pages'
-                sh 'npm run deploy'   // Assumes "homepage" is set in package.json
+                sh 'npm run deploy'   // Make sure package.json has a deploy script
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully! App deployed to GitHub Pages.'
+            echo 'Pipeline completed successfully! App built and deployed.'
         }
         failure {
-            echo 'Pipeline failed. Check logs!'
+            echo 'Pipeline failed. Check the logs!'
         }
     }
 }
