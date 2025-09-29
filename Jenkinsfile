@@ -38,14 +38,20 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                echo 'Deploying to GitHub Pages...'
-                withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
-                    sh 'npm run deploy'
-                }
-            }
+    steps {
+        echo 'Deploying to GitHub Pages...'
+        withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+            sh '''
+                git config user.name "jenkins-bot"
+                git config user.email "jenkins@example.com"
+                
+                npm install -g gh-pages
+                gh-pages -d build -u "https://$GITHUB_TOKEN@github.com/<your-username>/<your-repo>.git"
+            '''
         }
     }
+}
+
 
     post {
         always {
