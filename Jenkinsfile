@@ -18,14 +18,18 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                echo 'Installing dependencies and building app...'
-                sh 'rm -rf node_modules'
-                sh 'npm install'
-                sh 'npm run build'
-                archiveArtifacts artifacts: 'build/**', fingerprint: true
-            }
-        }
+    steps {
+        echo 'Cleaning up old references...'
+        // Remove any import lines that mention TalkAIChat
+        sh "grep -rl 'TalkAIChat' src/ | xargs sed -i '' '/TalkAIChat/d' || true"
+        
+        echo 'Installing dependencies and building app...'
+        sh 'rm -rf node_modules'
+        sh 'npm install'
+        sh 'npm run build'
+    }
+}
+
 
         stage('Test') {
             steps {
