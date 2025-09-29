@@ -1,17 +1,32 @@
 // src/App.test.js
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Login from './components/Login';
 
-// Mock react-codemirror and codemirror packages
+// Mock all complex/ESM dependencies to prevent parsing errors
 jest.mock('@uiw/react-codemirror', () => () => <div>CodeMirror</div>);
 jest.mock('@codemirror/lang-javascript', () => ({}));
 jest.mock('@codemirror/theme-one-dark', () => ({}));
 jest.mock('react-markdown', () => (props) => <div>{props.children}</div>);
+jest.mock('react-syntax-highlighter', () => ({
+  Prism: (props) => <div>{props.children}</div>,
+}));
+jest.mock('react-router-dom', () => ({
+  useNavigate: () => jest.fn(),
+}));
 
-// Simple test
-test('renders header bar', () => {
-  render(<App />);
-  const header = screen.getByText(/Newsletter/i); // pick any text that always renders
-  expect(header).toBeInTheDocument();
+test('renders Login heading', () => {
+  render(<Login />);
+  expect(screen.getByText(/Login/i)).toBeInTheDocument();
+});
+
+test('renders email and password inputs', () => {
+  render(<Login />);
+  expect(screen.getByPlaceholderText(/Your email/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/Your password/i)).toBeInTheDocument();
+});
+
+test('login button exists', () => {
+  render(<Login />);
+  expect(screen.getByText(/Login/i)).toBeInTheDocument();
 });
