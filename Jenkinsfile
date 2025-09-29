@@ -1,32 +1,21 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS 18' // must match the name in Jenkins Global Tool Configuration
+    }
+
     environment {
-        NODEJS_HOME = tool name: 'NodeJS 18', type: 'NodeJSInstallation'
-        PATH = "${NODEJS_HOME}/bin:${env.PATH}"
+        PATH = "${tool 'NodeJS 18'}/bin:${env.PATH}"
     }
 
     stages {
-
-        stage('Checkout SCM') {
-            steps {
-                echo 'Checking out code from GitHub...'
-                git url: 'https://github.com/Vasusund/7.3H-SIT223.git', branch: 'main'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                echo 'Installing npm dependencies...'
-                sh 'npm ci'
-            }
-        }
-
         stage('Build') {
             steps {
-                echo 'Building React app...'
+                echo 'Installing dependencies and building app...'
+                sh 'rm -rf node_modules'
+                sh 'npm install'
                 sh 'npm run build'
-                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
             }
         }
 
@@ -37,18 +26,27 @@ pipeline {
             }
         }
 
+        stage('Code Quality') {
+            steps {
+                echo 'Running ESLint for code quality...'
+                sh 'npx eslint src/** || true'
+            }
+        }
+
         stage('Security') {
             steps {
-                echo 'Running npm audit for security vulnerabilities...'
-                sh 'npm audit --audit-level=moderate || true'
+                echo 'Checking for vulnerable packages...'
+                sh 'npm audit || true'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying application to test environment...'
-                sh 'npm install -g serve'
-                sh 'serve -s build -l 5000 &'
+                echo 'Deploying to GitHub Pages...'
+                // Make sure GITHUB_TOKEN or personal access token is set in Jenkins credentials
+                withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
+                    sh 'npm run deploy'
+                }
             }
         }
     }
@@ -59,7 +57,7 @@ pipeline {
             cleanWs()
         }
         success {
-            echo 'Pipeline succeeded!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check logs for details.'
