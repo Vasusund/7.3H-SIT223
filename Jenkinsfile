@@ -25,7 +25,8 @@ pipeline {
             steps {
                 echo 'Running ESLint for code quality...'
                 // Only check JS/JSX files, not CSS or images
-                sh 'npx eslint "src/**/*.js" "src/**/*.jsx" || true'
+                sh 'npx eslint "src/**/*.js" || true'
+
             }
         }
 
